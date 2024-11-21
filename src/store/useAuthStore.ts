@@ -32,7 +32,7 @@ const authSlice: StateCreator<
 export const useAuthStore = create<AuthStore>()(
   persist(authSlice, {
     name: 'auth-storage', // 저장소 이름
-    storage: createJSONStorage(() => AsyncStorage), // AsyncStorage 사용
+    storage: createJSONStorage(() => AsyncStorage),
   }),
 );
 
