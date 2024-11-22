@@ -1,16 +1,17 @@
 import React from 'react';
-import {FieldErrors, FieldValues, UseFormRegister} from 'react-hook-form';
+import {Controller, FieldErrors} from 'react-hook-form';
 import {TextInput, View} from 'react-native';
 import styled from 'styled-components/native';
 
 interface InputProps {
-  id: string;
-  required?: boolean;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors;
-  disabled?: boolean;
-  placeholder?: string;
-  onChange?: (value: string) => void;
+  control: any; // react-hook-form의 control 객체
+  id: string; // 필드 이름
+  rules?: any; // 유효성 검사 규칙
+  defaultValue?: string; // 기본값
+  errors: FieldErrors; // 오류 상태
+  placeholder?: string; // 플레이스홀더
+  disabled?: boolean; // 비활성화 상태
+  secureTextEntry?: boolean;
 }
 
 interface InputWrapperProps {
@@ -33,26 +34,32 @@ const StyledTextInput = styled(TextInput)`
   padding: 10px;
 `;
 
-const Input = ({
+const Input: React.FC<InputProps> = ({
+  control,
   id,
-  required = false,
-  register,
+  rules,
+  defaultValue = '',
   errors,
-  disabled = false,
   placeholder,
-  onChange,
-}: InputProps) => {
+  disabled = false,
+  secureTextEntry,
+}) => {
   return (
     <InputWrapper hasError={!!errors[id]} disabled={disabled}>
-      <StyledTextInput
-        placeholder={placeholder}
-        editable={!disabled}
-        onChangeText={value => {
-          if (onChange) {
-            onChange(value);
-          }
-        }}
-        {...register(id, {required})}
+      <Controller
+        control={control}
+        render={({field: {onChange, value}}) => (
+          <StyledTextInput
+            onChangeText={onChange}
+            value={value}
+            placeholder={placeholder}
+            editable={!disabled}
+            secureTextEntry={secureTextEntry}
+          />
+        )}
+        name={id}
+        rules={rules}
+        defaultValue={defaultValue}
       />
     </InputWrapper>
   );

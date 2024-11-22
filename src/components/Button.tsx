@@ -31,7 +31,7 @@ const Button = ({
       onPress={disabled ? undefined : onPress}
       backgroundColor={backgroundColor}
       disabled={disabled}>
-      <Text style={{color: disabled ? 'gray' : 'white'}}>{children}</Text>
+      <Text style={{color: 'white'}}>{children}</Text>
     </StyledButton>
   );
 };
